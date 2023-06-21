@@ -6,3 +6,10 @@
 body {
   background: linear-gradient(75.11deg, #283048 11.29%, #3c4446 90.23%);
 }
+
+.repeated-icon {
+  background-image: url("./assets/catRepeated.svg");
+  background-repeat: repeat;
+  background-size: 200px;
+  background-position: 5px 5px;
+}

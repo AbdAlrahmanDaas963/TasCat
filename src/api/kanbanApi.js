@@ -9,8 +9,22 @@ export const getBoards = async () => {
   return respone.data;
 };
 
+export const getBoard = async (boardId) => {
+  // console.log("from getBoard boardId:>> ", boardId);
+  if (!boardId) return null;
+
+  try {
+    const response = await kanbanApi.get(`/boards/${boardId}`);
+    return response.data;
+  } catch (error) {
+    // Handle error if the request fails
+    console.error("Error fetching board:", error);
+    throw error;
+  }
+};
+
 export const updateOnDrag = async (board) => {
-  console.log("board query :>> ", board);
+  console.log("board query calling from to functions :>> ", board);
   // console.log("board query id :>> ", id);
 
   return await kanbanApi.put(`/boards/${board.id}/`, board, {
@@ -23,6 +37,13 @@ export const addBoard = async (board) => {
     headers: { "Cache-Control": "no-cache" },
   });
 };
+
+// export const createTask = async ({ boardId, updatedBoard }) => {
+//   console.log("boardId from createTask API :>> ", boardId);
+//   console.log("updatedBoard from createTask API :>> ", updatedBoard);
+//   const response = await axios.post(`/boards/${boardId}/tasks`, updatedBoard);
+//   return response.data;
+// };
 
 export const deleteBoard = async (board) => {
   console.log("api id :>> ", board.id);

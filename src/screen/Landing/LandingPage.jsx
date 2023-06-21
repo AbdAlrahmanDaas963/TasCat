@@ -29,7 +29,7 @@ function LandingPage() {
             Let the Cat arrange business for you
           </Typography>
         </Stack>
-        <Link to={"/kanban"}>
+        <Link to={"/boards"}>
           <ButtonApp title={"Get Started"} />
         </Link>
         <br />

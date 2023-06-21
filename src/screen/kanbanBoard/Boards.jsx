@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function Kanban() {
+function Boards() {
   const uniqueId = uuidv4();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
@@ -106,7 +106,7 @@ function Kanban() {
             alignItems={"center"}
             justifyContent={"space-evenly"}
           >
-            <Link to={"/newboard"} state={{ data: item }}>
+            <Link to={"/tasks"} state={{ data: item }}>
               <Typography color={"white"}>{item.title}</Typography>
             </Link>
             <SureDialog
@@ -162,4 +162,4 @@ function Kanban() {
   );
 }
 
-export default Kanban;
+export default Boards;

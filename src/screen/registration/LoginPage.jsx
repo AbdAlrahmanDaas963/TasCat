@@ -1,133 +1,140 @@
 import React from "react";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  TextField,
+  Stack,
+  Button,
+  Container,
+} from "@mui/material";
 
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Divider } from "@mui/material";
+import { validationsLoginForm } from "./validationSchema";
+import { withFormik } from "formik";
+import * as yup from "yup";
 
 import TasCatSvg from "../../assets/TasCat.svg";
-import googleSvg from "../../assets/google.svg";
-import catPrintSvg from "../../assets/catPrint.svg";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="/home">
-        TasCat
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-function LoginPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+const form = (props) => {
+  const {
+    values,
+    touched,
+    errors,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    handleReset,
+  } = props;
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      sx={{ backgroundColor: "#283048", padding: "50px" }}
+    <Stack
+      sx={{
+        background:
+          "linear-gradient(234.24deg,rgba(217, 217, 217, 0.12) -0.46%,rgba(217, 217, 217, 0.09) 100%)",
+        width: "100vw",
+        height: "100vh",
+      }}
     >
-      <Box
+      <Container
+        className="repeated-icon"
         sx={{
-          marginTop: 8,
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
+          height: "100vh",
+          minHeight: "500px",
         }}
       >
-        <img src={TasCatSvg} alt="" width={"200px"} />
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            endIcon={<img src={catPrintSvg} width={"20px"} height={"20px"} />}
+        <form onSubmit={handleSubmit}>
+          <Card
+            sx={{
+              background:
+                "linear-gradient(90deg, #283048 0%, rgba(40, 48, 72, 0.49) 100%)",
+              border: "2px solid #FFFFFF",
+              backdropFilter: "blur(7px)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "400px",
+              borderRadius: "8px",
+              padding: "50px 30px",
+            }}
           >
-            Sign In
-          </Button>
-          <Divider>OR</Divider>
-          <Grid container>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <Grid item xs>
-                <Button
-                  variant="outlined"
-                  startIcon={
-                    <img src={googleSvg} width={"20px"} height={"20px"} />
-                  }
-                >
-                  Sign in with Google
-                </Button>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Box>
-          </Grid>
-        </Box>
-      </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
-    </Container>
+            <img src={TasCatSvg} alt="" width={"200px"} />
+            <CardContent>
+              <TextField
+                id="email"
+                label="Email"
+                type="email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.email ? errors.email : ""}
+                error={touched.email && Boolean(errors.email)}
+                margin="dense"
+                variant="standard"
+                fullWidth
+              />
+              <TextField
+                id="password"
+                label="Password"
+                type="password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.password ? errors.password : ""}
+                error={touched.password && Boolean(errors.password)}
+                margin="dense"
+                variant="standard"
+                fullWidth
+              />
+            </CardContent>
+            <CardActions>
+              <Button type="submit" color="primary" disabled={isSubmitting}>
+                SUBMIT
+              </Button>
+              <Button color="info" onClick={handleReset}>
+                CLEAR
+              </Button>
+            </CardActions>
+          </Card>
+        </form>
+      </Container>
+    </Stack>
   );
-}
+};
 
-export default LoginPage;
+const Form = withFormik({
+  mapPropsToValues: ({
+    website,
+    name,
+    surname,
+    email,
+    course,
+    password,
+    confirmPassword,
+  }) => {
+    return {
+      website: website || "",
+      name: name || "",
+      surname: surname || "",
+      email: email || "",
+      course: course || "",
+      password: password || "",
+      confirmPassword: confirmPassword || "",
+    };
+  },
+
+  validationSchema: yup.object().shape(validationsLoginForm),
+
+  handleSubmit: (values, { setSubmitting }) => {
+    setTimeout(() => {
+      // submit to the server
+      alert(JSON.stringify(values, null, 2));
+      setSubmitting(false);
+    }, 1000);
+  },
+})(form);
+
+export default Form;

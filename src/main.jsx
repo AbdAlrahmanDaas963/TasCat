@@ -12,11 +12,13 @@ import theme from "./config/muiTheme";
 
 import "./index.css";
 import DragTasks from "./screen/DragTasks";
-import Kanban from "./screen/kanbanBoard/Kanban";
+import Boards from "./screen/kanbanBoard/Boards";
 import LandingPage from "./screen/Landing/LandingPage";
-import NewBoard from "./screen/newDandD/NewBoard";
+import Tasks from "./screen/newDandD/Tasks";
 import LoginPage from "./screen/registration/LoginPage";
 import SignupPage from "./screen/registration/SignupPage";
+import Drawer from "./screen/newDandD/drawer/Drawer";
+import App from "./App";
 
 const queryClient = new QueryClient();
 
@@ -30,12 +32,16 @@ const router = createBrowserRouter([
     element: <DragTasks />,
   },
   {
-    path: "/kanban",
-    element: <Kanban />,
+    path: "/boards",
+    element: <Boards />,
   },
   {
-    path: "/newboard",
-    element: <NewBoard />,
+    path: "/tasks",
+    element: <Tasks />,
+  },
+  {
+    path: "/app",
+    element: <App />,
   },
   {
     path: "/login",
