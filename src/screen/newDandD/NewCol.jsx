@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import NewTask from "./NewTask";
 import { StrictModeDroppable } from "../../helpers/StrictModeDroppable";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Radio from "@mui/material/Radio";
@@ -20,15 +18,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles({
-  root: {
-    color: "#f00",
-  },
-  checked: {
-    color: "#0f0",
-  },
-});
-
 function NewCol({
   tasks,
   status,
@@ -37,7 +26,6 @@ function NewCol({
   handleEditTask,
   handleDeleteTask,
 }) {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   const [formValues, setFormValues] = useState({
@@ -171,12 +159,7 @@ function NewCol({
                 >
                   <FormControlLabel
                     value="todo"
-                    control={
-                      <Radio
-                        className={classes.root}
-                        checkedClassName={classes.checked}
-                      />
-                    }
+                    control={<Radio />}
                     label="Todo"
                   />
                   <FormControlLabel
