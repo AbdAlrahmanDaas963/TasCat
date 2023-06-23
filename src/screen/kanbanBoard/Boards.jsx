@@ -48,6 +48,7 @@ function Boards() {
   const queryClient = useQueryClient();
 
   const {
+    refetch,
     isLoading,
     isError,
     error,
@@ -58,9 +59,20 @@ function Boards() {
 
   const handleAddBoardButton = async (e) => {
     e.preventDefault();
-    addBoardMutation.mutate({ id: uniqueId, title: newBoard });
+    addBoardMutation.mutate({
+      id: uniqueId,
+      title: newBoard,
+      tasks: {
+        todo: [],
+        doing: [],
+        done: [],
+      },
+    });
     setNewBoard("");
     handleClose();
+    setTimeout(() => {
+      refetch();
+    }, 100);
     await queryClient.refetchQueries("boards");
   };
 
@@ -70,6 +82,9 @@ function Boards() {
     console.log("id :>> ", id);
     deleteBoardMutation.mutate({ id });
     handleMenuClose();
+    setTimeout(() => {
+      refetch();
+    }, 100);
   };
 
   const addBoardMutation = useMutation(addBoard, {
@@ -96,17 +111,29 @@ function Boards() {
       direction={"column"}
     >
       <img src={tasCatSvg} alt="" />
-      <Stack direction={"row"} justifyContent={"space-evenly"} width={"100%"}>
+      <Stack
+        display={"flex"}
+        flexWrap={"wrap"}
+        flexDirection={"row"}
+        justifyContent={"space-evenly"}
+        alignItems={"center"}
+        width={"100%"}
+      >
         {boards.map((item, index) => (
           <Stack
             key={index}
             border={"2px solid white"}
-            sx={{ width: "200px", height: "100px", borderRadius: "7px" }}
+            sx={{
+              width: "200px",
+              height: "100px",
+              borderRadius: "7px",
+              margin: "10px",
+            }}
             direction={"row"}
             alignItems={"center"}
             justifyContent={"space-evenly"}
           >
-            <Link to={"/tasks"} state={{ data: item }}>
+            <Link to={"/drawer"} state={{ data: item }}>
               <Typography color={"white"}>{item.title}</Typography>
             </Link>
             <SureDialog
@@ -139,23 +166,48 @@ function Boards() {
           onClose={handleClose}
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>{"Add Board"}</DialogTitle>
-          <DialogContent>
-            <TextField
-              variant="standard"
-              placeholder="Board Title"
-              value={newBoard}
-              onChange={(e) => setNewBoard(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button color={"inherit"} onClick={handleClose}>
-              Close
-            </Button>
-            <Button color={"success"} onClick={handleAddBoardButton}>
-              Add
-            </Button>
-          </DialogActions>
+          <Stack
+            sx={{
+              backgroundColor: "#283048",
+              border: "1px solid #FFFFFF",
+              borderRadius: "7px",
+              color: "white",
+            }}
+          >
+            <DialogTitle
+              textAlign={"center"}
+              sx={{
+                fontWeight: "bold",
+              }}
+            >
+              {"NEW BOARD"}
+            </DialogTitle>
+            <DialogContent sx={{ padding: "25px" }}>
+              <TextField
+                variant="outlined"
+                placeholder="Board Title"
+                value={newBoard}
+                onChange={(e) => setNewBoard(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions sx={{ padding: " 0 25px 25px 25px" }}>
+              <Button
+                color={"inherit"}
+                variant="outlined"
+                onClick={handleClose}
+              >
+                Close
+              </Button>
+              <Button
+                fullWidth
+                color={"success"}
+                variant="contained"
+                onClick={handleAddBoardButton}
+              >
+                Add
+              </Button>
+            </DialogActions>
+          </Stack>
         </Dialog>
       </div>
     </Stack>

@@ -6,12 +6,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@emotion/react";
+import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./config/muiTheme";
 
 import "./index.css";
-import DragTasks from "./screen/DragTasks";
+
 import Boards from "./screen/kanbanBoard/Boards";
 import LandingPage from "./screen/Landing/LandingPage";
 import Tasks from "./screen/newDandD/Tasks";
@@ -28,20 +28,20 @@ const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: "/dragtasks",
-    element: <DragTasks />,
+    path: "/app",
+    element: <App />,
   },
   {
     path: "/boards",
     element: <Boards />,
   },
   {
-    path: "/tasks",
-    element: <Tasks />,
+    path: "/drawer",
+    element: <Drawer />,
   },
   {
-    path: "/app",
-    element: <App />,
+    path: "/tasks",
+    element: <Tasks />,
   },
   {
     path: "/login",

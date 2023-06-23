@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 import { useQuery, useMutation, useQueryClient } from "react-query";
@@ -10,8 +10,10 @@ import { DragDropContext } from "react-beautiful-dnd";
 
 import NewCol from "./NewCol";
 
-function Tasks({ boardId, boardTitle = "gym" }) {
+function Tasks({ boardId, boardTitle }) {
+  // const [title, setTitle] = useState(boardTitle);
   const {
+    refetch,
     isLoading,
     isError,
     error,
@@ -29,43 +31,74 @@ function Tasks({ boardId, boardTitle = "gym" }) {
   });
 
   const updateBoards = async (newTasks) => {
-    // console.log("newTasks :>> ", newTasks);
     updateByDrag.mutate({
       tasks: newTasks,
-      id: boardId,
-      title: boardTitle,
+      id: tasCat.id,
+      title: tasCat.title,
     });
+    setTimeout(() => {
+      refetch();
+    }, 200);
     await queryClient.refetchQueries("boards");
   };
 
-  // !
-
   const addTask = async (formValues) => {
-    console.log("formValues :>> ", formValues);
     const taskData = {
-      id: uuidv4(), // Replace with a unique ID for the new task
+      id: uuidv4(),
       content: formValues.taskTitle,
       description: formValues.taskDescription,
     };
 
     const updatedBoard = JSON.parse(JSON.stringify(tasCat)); // Make a deep copy of the board object
-    updatedBoard.tasks["todo"].push(taskData); // Add the new task to the appropriate status array
+    updatedBoard.tasks[formValues.taskStatus].push(taskData); // Add the new task to the appropriate status array
 
-    console.log("updatedBoard :>> ", updatedBoard);
     updateByDrag.mutate({
       tasks: updatedBoard.tasks,
       id: updatedBoard.id,
       title: updatedBoard.title,
     });
+    setTimeout(() => {
+      refetch();
+    }, 200);
     await queryClient.refetchQueries("boards");
+    queryClient.refetchQueries();
+  };
+
+  const deleteTask = async (taskId) => {
+    console.log("taskId :>> ", taskId);
+
+    const updatedBoard = tasCat;
+
+    for (const status in updatedBoard.tasks) {
+      if (Object.prototype.hasOwnProperty.call(updatedBoard.tasks, status)) {
+        const tasks = updatedBoard.tasks[status];
+
+        // Find the index of the task with the given ID
+        const taskIndex = tasks.findIndex((task) => task.id === taskId);
+
+        if (taskIndex !== -1) {
+          // Delete the task from the array
+          tasks.splice(taskIndex, 1);
+
+          console.log("Task deleted successfully.");
+
+          // Exit the loop since the task is found and deleted
+          console.log("updatedBoard :>> ", updatedBoard);
+          updateByDrag.mutate({
+            tasks: updatedBoard.tasks,
+            id: updatedBoard.id,
+            title: updatedBoard.title,
+          });
+
+          await queryClient.refetchQueries("boards");
+          return;
+        }
+      }
+    }
   };
   const editTask = async (formValues) => {
     console.log("formValues from tasks editTask fun :>> ", formValues);
-    // const updatedBoard = tasCat.tasks.map((taskItem) => {
-    //   if (taskItem.id === formValues.id) {
-    //     return { ...taskItem, ...formValues };
-    //   }
-    // });
+
     const updatedBoard = {
       ...tasCat,
       tasks: {
@@ -83,21 +116,14 @@ function Tasks({ boardId, boardTitle = "gym" }) {
     };
     console.log("updatedBoard from tasks editTask fun :>> ", updatedBoard);
 
-    // const taskData = {
-    //   id: uuidv4(), // Replace with a unique ID for the new task
-    //   content: formValues.taskTitle,
-    //   description: formValues.taskDescription,
-    // };
-
-    // const updatedBoard = JSON.parse(JSON.stringify(tasCat)); // Make a deep copy of the board object
-    // updatedBoard.tasks["todo"].push(taskData); // Add the new task to the appropriate status array
-
-    // console.log("updatedBoard :>> ", updatedBoard);
     updateByDrag.mutate({
       tasks: updatedBoard.tasks,
       id: updatedBoard.id,
       title: updatedBoard.title,
     });
+    setTimeout(() => {
+      refetch();
+    }, 200);
     await queryClient.refetchQueries("boards");
   };
 
@@ -182,7 +208,6 @@ function Tasks({ boardId, boardTitle = "gym" }) {
   if (isError) {
     return <h1>Error: {error.message}</h1>;
   }
-  // if (tasCat) return <h1>^_^ {boardId} </h1>;
 
   if (!boardId) return <h1>Please choose board to view!</h1>;
 
@@ -197,9 +222,16 @@ function Tasks({ boardId, boardTitle = "gym" }) {
           fontWeight: "700",
         }}
       >
-        {boardTitle.title}
+        {tasCat.title}
       </Typography>
-      <Stack marginTop={"50px"} direction={"row"} justifyContent={"center"}>
+      <Stack
+        marginTop={"50px"}
+        display={"flex"}
+        flexWrap={"wrap"}
+        flexDirection={"row"}
+        justifyContent={"space-between"}
+        alignItems={"flex-start"}
+      >
         <Stack
           sx={{
             margin: "0 50px",
@@ -210,10 +242,10 @@ function Tasks({ boardId, boardTitle = "gym" }) {
           }}
         >
           <h2>Todo</h2>
-          {/* {todo && <NewCol tasks={tasCat.tasks.todo} status="todo" />} */}
           <NewCol
             handleAddTask={addTask}
             handleEditTask={editTask}
+            handleDeleteTask={deleteTask}
             boardId={boardId}
             tasks={tasCat.tasks.todo}
             status="todo"
@@ -229,10 +261,10 @@ function Tasks({ boardId, boardTitle = "gym" }) {
           }}
         >
           <h2>Doing</h2>
-          {/* {doing && <NewCol tasks={tasCat.tasks.doing} status="doing" />} */}
           <NewCol
             handleAddTask={addTask}
             handleEditTask={editTask}
+            handleDeleteTask={deleteTask}
             boardId={boardId}
             tasks={tasCat.tasks.doing}
             status="doing"
@@ -248,10 +280,10 @@ function Tasks({ boardId, boardTitle = "gym" }) {
           }}
         >
           <h2>Done</h2>
-          {/* {done && <NewCol tasks={tasCat.tasks.done} status="done" />} */}
           <NewCol
             handleAddTask={addTask}
             handleEditTask={editTask}
+            handleDeleteTask={deleteTask}
             boardId={boardId}
             tasks={tasCat.tasks.done}
             status="done"

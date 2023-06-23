@@ -146,21 +146,10 @@ const form = (props) => {
 };
 
 const SingupForm = withFormik({
-  mapPropsToValues: ({
-    website,
-    name,
-    surname,
-    email,
-    course,
-    password,
-    confirmPassword,
-  }) => {
+  mapPropsToValues: ({ name, email, password, confirmPassword }) => {
     return {
-      website: website || "",
       name: name || "",
-      surname: surname || "",
       email: email || "",
-      course: course || "",
       password: password || "",
       confirmPassword: confirmPassword || "",
     };

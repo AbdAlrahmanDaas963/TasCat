@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Box, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 function LandingBox({ title, desc, icon }) {
   return (

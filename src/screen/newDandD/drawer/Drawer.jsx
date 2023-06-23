@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -22,7 +25,9 @@ import MailIcon from "@mui/icons-material/Mail";
 import Tasks from "../Tasks";
 
 import { getBoards } from "../../../api/kanbanApi";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
+
+import { useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -72,16 +77,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function PersistentDrawerLeft() {
+  const location = useLocation();
+  const receivedData = location.state;
+  console.log("receivedData :>> ", receivedData.data.id);
   const theme = useTheme();
   const [open, setOpen] = useState(true);
 
-  // const [boardswithId, setBoardswithId] = useState([
-  //   { id: 1, title: "gym" },
-  //   { id: 2, title: "work" },
-  //   { id: 3, title: "gym" },
-  //   { id: 4, title: "school" },
-  // ]);
-  const [selectedBoardId, setSelectedBoardId] = useState();
+  const [selectedBoardId, setSelectedBoardId] = useState(receivedData.data.id);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -99,53 +101,28 @@ export default function PersistentDrawerLeft() {
   } = useQuery("tasks", getBoards);
   console.log("boards :>> ", boards);
 
-  // useEffect(() => {
-  //   setBoardswithId(boards);
-  // }, [dataGetted]);
-
-  // setBoardswithId(boards);
-
-  // if (boards) {
-  //   const newboo = boards.map(({ id, title }) => ({ id, title }));
-  //   setBoardswithId(newboo);
-  // }
-  //
-
-  // useEffect(() => {
-  //   const getBoardIds = (boardsArray) => {
-  //     if (!boardsArray) return [];
-  //     return boardsArray.map(({ id, title }) => ({ id, title }));
-  //   };
-
-  //   //
-  //   // Usage
-  //   const boardIds = getBoardIds(boards);
-  //   setBoardswithId(boardIds);
-
-  //   console.log("boardswithId :>> ", boardswithId);
-  // }, []);
-
   if (isLoading) return <h1>looooading</h1>;
 
-  const boardsList = boards.map((item, index) => (
-    <ListItem
-      key={item.id}
-      onClick={() => setSelectedBoardId(item.id)}
-      disablePadding
-    >
-      <ListItemButton>
-        <ListItemIcon>
-          {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-        </ListItemIcon>
-        <ListItemText primary={item.title} />
-      </ListItemButton>
-    </ListItem>
-  ));
+  const boardsList = boards.map((item, index) => {
+    const isSelected = selectedBoardId === item.id;
+    return (
+      <ListItem
+        key={item.id}
+        onClick={() => setSelectedBoardId(item.id)}
+        disablePadding
+        className={isSelected ? "selected" : ""}
+      >
+        <ListItemButton>
+          <ListItemText primary={item.title} />
+        </ListItemButton>
+      </ListItem>
+    );
+  });
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "#3f4965" }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -157,7 +134,7 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            <Link to={"/"}>TasCat</Link>
           </Typography>
         </Toolbar>
       </AppBar>
@@ -188,7 +165,7 @@ export default function PersistentDrawerLeft() {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Tasks boardId={selectedBoardId} />
+        <Tasks boardId={selectedBoardId} boardTitle={receivedData.data.title} />
       </Main>
     </Box>
   );

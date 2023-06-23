@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Box, Stack, Typography } from "@mui/material";
+
 import ButtonApp from "../../components/common/buttonapp/ButtonApp";
-import LandingBox from "./components/LandingBox";
+import LandingBoxContainer from "./components/LandingBoxContainer";
 
 import Aust from "../../assets/aust.svg";
 import TasCatSvg from "../../assets/TasCat.svg";
-import LandingBoxContainer from "./components/LandingBoxContainer";
 
 function LandingPage() {
   return (

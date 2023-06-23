@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function NewTask({ task, index, status, editTask }) {
+function NewTask({ task, index, status, editTask, deleteTask }) {
   const [openDel, setOpenDel] = React.useState(false);
 
   const handleClickOpenDel = () => {
@@ -26,6 +26,14 @@ function NewTask({ task, index, status, editTask }) {
   const handleCloseDel = () => {
     setOpenDel(false);
   };
+  const handleDelete = (event) => {
+    handleCloseDel();
+    event.preventDefault();
+    console.log("event.target.value :>> ", event.target);
+
+    deleteTask(task.id);
+  };
+
   // console.log("task from new task :>> ", task);
   const [formValues, setFormValues] = useState({
     content: task.content,
@@ -129,14 +137,41 @@ function NewTask({ task, index, status, editTask }) {
                 onClose={handleCloseDel}
                 aria-describedby="alert-dialog-slide-description"
               >
-                <DialogTitle>{"Sure to delete this Task?"}</DialogTitle>
-                <DialogContent></DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCloseDel}>cancel</Button>
-                  <Button color="error" onClick={handleCloseDel}>
-                    Delete
-                  </Button>
-                </DialogActions>
+                <Stack
+                  sx={{
+                    backgroundColor: "#283048",
+                    border: "1px solid #FFFFFF",
+                    borderRadius: "7px",
+                    color: "white",
+                  }}
+                >
+                  <DialogTitle
+                    textAlign={"center"}
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {"Sure to delete this Task?"}
+                  </DialogTitle>
+                  <DialogContent sx={{ padding: "25px" }}></DialogContent>
+                  <DialogActions sx={{ padding: " 0 25px 25px 25px" }}>
+                    <Button
+                      color={"inherit"}
+                      variant="outlined"
+                      onClick={handleCloseDel}
+                    >
+                      cancel
+                    </Button>
+                    <Button
+                      fullWidth
+                      color={"error"}
+                      variant="contained"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </Button>
+                  </DialogActions>
+                </Stack>
               </Dialog>
             </div>
             <Dialog

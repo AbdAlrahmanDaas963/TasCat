@@ -106,23 +106,10 @@ const form = (props) => {
 };
 
 const Form = withFormik({
-  mapPropsToValues: ({
-    website,
-    name,
-    surname,
-    email,
-    course,
-    password,
-    confirmPassword,
-  }) => {
+  mapPropsToValues: ({ email, password }) => {
     return {
-      website: website || "",
-      name: name || "",
-      surname: surname || "",
       email: email || "",
-      course: course || "",
       password: password || "",
-      confirmPassword: confirmPassword || "",
     };
   },
 

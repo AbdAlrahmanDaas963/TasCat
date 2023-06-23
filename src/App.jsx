@@ -1,10 +1,9 @@
-import Drawer from "./screen/newDandD/drawer/Drawer";
-import Drawer2 from "./screen/newDandD/drawer/Drawer2";
+import Loading from "./components/Loading";
 
 function App() {
   return (
     <>
-      <Drawer />
+      <Loading />
     </>
   );
 }

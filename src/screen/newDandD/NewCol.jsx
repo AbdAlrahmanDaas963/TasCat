@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import NewTask from "./NewTask";
 import { StrictModeDroppable } from "../../helpers/StrictModeDroppable";
 
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -19,7 +20,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function NewCol({ tasks, status, boardId, handleAddTask, handleEditTask }) {
+const useStyles = makeStyles({
+  root: {
+    color: "#f00",
+  },
+  checked: {
+    color: "#0f0",
+  },
+});
+
+function NewCol({
+  tasks,
+  status,
+  boardId,
+  handleAddTask,
+  handleEditTask,
+  handleDeleteTask,
+}) {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   const [formValues, setFormValues] = useState({
@@ -87,6 +105,7 @@ function NewCol({ tasks, status, boardId, handleAddTask, handleEditTask }) {
                 task={task}
                 index={index}
                 editTask={handleEditTask}
+                deleteTask={handleDeleteTask}
               />
             ))}
             {provided.placeholder}
@@ -104,64 +123,90 @@ function NewCol({ tasks, status, boardId, handleAddTask, handleEditTask }) {
           onClose={handleClose}
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>
-            Add new task for board with id = {boardId} and status = {status}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              adding new meaww
-            </DialogContentText>
-            <FormControl>
-              <TextField
-                id="standard-basic"
-                label="task title"
-                variant="standard"
-                value={formValues.taskTitle}
-                onChange={handleTitleChange}
-              />
-              <TextField
-                id="standard-basic"
-                label="task description"
-                variant="standard"
-                value={formValues.taskDescription}
-                onChange={handleDescriptionChange}
-              />
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                defaultValue={status}
-                onChange={handleStatusChange}
-              >
-                <FormControlLabel
-                  value="todo"
-                  control={<Radio />}
-                  label="Todo"
-                />
-                <FormControlLabel
-                  value="doing"
-                  control={<Radio />}
-                  label="Doing"
-                />
-                <FormControlLabel
-                  value="done"
-                  control={<Radio />}
-                  label="Done"
-                />
-              </RadioGroup>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button
-              onClick={handleSubmit}
-              type="submit"
-              variant="contained"
-              color="primary"
+          <Stack
+            sx={{
+              backgroundColor: "#283048",
+              border: "1px solid #FFFFFF",
+              borderRadius: "7px",
+              color: "white",
+            }}
+          >
+            <DialogTitle
+              sx={{
+                fontWeight: "bold",
+              }}
+              textAlign={"center"}
             >
-              Submit
-            </Button>
-          </DialogActions>
+              NEW TASK
+            </DialogTitle>
+            <DialogContent
+              sx={{
+                minWidth: "350px",
+                padding: "25px",
+              }}
+            >
+              <FormControl fullWidth>
+                <TextField
+                  sx={{ marginTop: "10px" }}
+                  id="standard-basic"
+                  label="task title"
+                  variant="outlined"
+                  value={formValues.taskTitle}
+                  onChange={handleTitleChange}
+                />
+                <TextField
+                  sx={{ marginTop: "10px" }}
+                  id="standard-basic"
+                  label="task description"
+                  variant="outlined"
+                  value={formValues.taskDescription}
+                  onChange={handleDescriptionChange}
+                />
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  defaultValue={status}
+                  onChange={handleStatusChange}
+                >
+                  <FormControlLabel
+                    value="todo"
+                    control={
+                      <Radio
+                        className={classes.root}
+                        checkedClassName={classes.checked}
+                      />
+                    }
+                    label="Todo"
+                  />
+                  <FormControlLabel
+                    value="doing"
+                    control={<Radio />}
+                    label="Doing"
+                  />
+                  <FormControlLabel
+                    value="done"
+                    control={<Radio />}
+                    label="Done"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </DialogContent>
+            <DialogActions sx={{ padding: " 0 25px 25px 25px" }}>
+              <Button color="inherit" variant="outlined" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                fullWidth
+                onClick={handleSubmit}
+                type="submit"
+                variant="contained"
+                color="success"
+              >
+                Add
+              </Button>
+            </DialogActions>
+          </Stack>
         </Dialog>
       </div>
     </Stack>
