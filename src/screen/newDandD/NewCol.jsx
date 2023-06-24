@@ -21,7 +21,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function NewCol({
   tasks,
   status,
-  boardId,
   handleAddTask,
   handleEditTask,
   handleDeleteTask,
