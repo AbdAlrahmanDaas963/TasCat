@@ -11,6 +11,8 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -66,6 +68,12 @@ function NewTask({ task, index, status, editTask, deleteTask }) {
   };
 
   const handleClickOpen = () => {
+    setFormValues({
+      content: task.content,
+      description: task.description,
+      status: status,
+      id: task.id,
+    });
     setOpen(true);
     console.log("task :>> ", task, status);
   };
@@ -105,6 +113,9 @@ function NewTask({ task, index, status, editTask, deleteTask }) {
             minHeight: "50px",
             margin: "0 0 15px 0",
             padding: "10px",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -119,17 +130,20 @@ function NewTask({ task, index, status, editTask, deleteTask }) {
             </Typography>
           </Stack>
           <div>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleClickOpen}
-            >
-              Edit
-            </Button>
+            <Stack>
+              <Button
+                color="secondary"
+                onClick={handleClickOpen}
+                endIcon={<EditIcon />}
+              />
+              <Button
+                endIcon={<DeleteIcon />}
+                variant="text"
+                color="error"
+                onClick={handleClickOpenDel}
+              />
+            </Stack>
             <div>
-              <Button variant="text" color="error" onClick={handleClickOpenDel}>
-                Del
-              </Button>
               <Dialog
                 open={openDel}
                 TransitionComponent={Transition}
@@ -181,52 +195,83 @@ function NewTask({ task, index, status, editTask, deleteTask }) {
               onClose={handleClose}
               aria-describedby="alert-dialog-slide-description"
             >
-              <DialogTitle>{"Edit"}</DialogTitle>
-              <DialogContent>
-                <FormControl>
-                  <TextField
-                    id="standard-basic"
-                    label="task title"
-                    variant="standard"
-                    value={formValues.content}
-                    onChange={handleTitleChange}
-                  />
-                  <TextField
-                    id="standard-basic"
-                    label="task description"
-                    variant="standard"
-                    value={formValues.description}
-                    onChange={handleDescriptionChange}
-                  />
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    defaultValue={status}
-                    onChange={handleStatusChange}
+              <Stack
+                sx={{
+                  backgroundColor: "#283048",
+                  border: "1px solid #FFFFFF",
+                  borderRadius: "7px",
+                  color: "white",
+                }}
+              >
+                <DialogTitle
+                  textAlign={"center"}
+                  sx={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  {"Edit"}
+                </DialogTitle>
+                <DialogContent sx={{ padding: "25px" }}>
+                  <FormControl>
+                    <TextField
+                      id="standard-basic"
+                      label="task title"
+                      variant="standard"
+                      value={formValues.content}
+                      onChange={handleTitleChange}
+                      sx={{ input: { color: "white", borderColor: "white" } }}
+                    />
+                    <TextField
+                      id="standard-basic"
+                      label="task description"
+                      variant="standard"
+                      value={formValues.description}
+                      onChange={handleDescriptionChange}
+                      sx={{ input: { color: "white", borderColor: "white" } }}
+                    />
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                      defaultValue={status}
+                      onChange={handleStatusChange}
+                    >
+                      <FormControlLabel
+                        value="todo"
+                        control={<Radio />}
+                        label="Todo"
+                      />
+                      <FormControlLabel
+                        value="doing"
+                        control={<Radio />}
+                        label="Doing"
+                      />
+                      <FormControlLabel
+                        value="done"
+                        control={<Radio />}
+                        label="Done"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </DialogContent>
+                <DialogActions sx={{ padding: " 0 25px 25px 25px" }}>
+                  <Button
+                    variant="outlined"
+                    color="inherit"
+                    onClick={handleClose}
                   >
-                    <FormControlLabel
-                      value="todo"
-                      control={<Radio />}
-                      label="Todo"
-                    />
-                    <FormControlLabel
-                      value="doing"
-                      control={<Radio />}
-                      label="Doing"
-                    />
-                    <FormControlLabel
-                      value="done"
-                      control={<Radio />}
-                      label="Done"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleEdit}>Update</Button>
-              </DialogActions>
+                    Cancel
+                  </Button>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="success"
+                    onClick={handleEdit}
+                  >
+                    Update
+                  </Button>
+                </DialogActions>
+              </Stack>
             </Dialog>
           </div>
         </Box>

@@ -11,8 +11,8 @@ function LandingBox({ title, desc, icon }) {
         background:
           "linear-gradient(180deg, rgba(40, 48, 72, 0.7) 0%, #283048 100%)",
       }}
-      width={"350px"}
-      height={"113px"}
+      width={"100%"}
+      height={"100%"}
       direction={"row"}
     >
       <img src={icon} alt="" width={"50px"} />

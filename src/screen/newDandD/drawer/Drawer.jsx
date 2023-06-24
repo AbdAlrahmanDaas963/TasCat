@@ -110,6 +110,7 @@ export default function PersistentDrawerLeft() {
         key={item.id}
         onClick={() => setSelectedBoardId(item.id)}
         disablePadding
+        sx={{ color: "white" }}
         className={isSelected ? "selected" : ""}
       >
         <ListItemButton>
@@ -122,7 +123,7 @@ export default function PersistentDrawerLeft() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ backgroundColor: "#3f4965" }}>
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "#283048" }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -134,12 +135,13 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            <Link to={"/"}>TasCat</Link>
+            {/* <Link to={"/"}>TasCat</Link> */}
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
         sx={{
+          backgroundColor: "#283048",
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
@@ -151,17 +153,22 @@ export default function PersistentDrawerLeft() {
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        <DrawerHeader sx={{ backgroundColor: "#283048" }}>
+          <Typography color={"white"} variant="h6" noWrap component="div">
+            <Link to={"/"}>TasCat</Link>
+          </Typography>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon sx={{ color: "white" }} />
             ) : (
               <ChevronRightIcon />
             )}
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>{isLoading ? <h1>loading...</h1> : boardsList}</List>
+        <List sx={{ backgroundColor: "#232939", height: "100%" }}>
+          {isLoading ? <h1>loading...</h1> : boardsList}
+        </List>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />

@@ -12,7 +12,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import { Stack, TextField } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -81,7 +81,13 @@ function NewCol({
 
   if (!tasks) return <p>loading tasks</p>;
   return (
-    <Stack width={"200px"}>
+    <Stack
+      width={"300px"}
+      sx={{
+        padding: 0,
+        marginTop: "30px",
+      }}
+    >
       <StrictModeDroppable droppableId={status}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -100,8 +106,27 @@ function NewCol({
         )}
       </StrictModeDroppable>
       <div>
-        <Button fullWidth variant="outlined" onClick={handleClickOpen}>
-          Add +
+        <Button
+          sx={{
+            background: "#3F4965",
+            boxShadow: "0px 2px 5px 0px #00000040",
+            padding: "0px 16px 0px 16px",
+            borderRadius: "8px",
+            justify: "space-between",
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            color: "white",
+            border: "0px",
+            height: "30px",
+          }}
+          fullWidth
+          variant="outlined"
+          onClick={handleClickOpen}
+        >
+          <Typography>ADD</Typography>
+          <Typography>+</Typography>
         </Button>
         <Dialog
           open={open}
@@ -134,7 +159,10 @@ function NewCol({
             >
               <FormControl fullWidth>
                 <TextField
-                  sx={{ marginTop: "10px" }}
+                  sx={{
+                    marginTop: "10px",
+                    input: { color: "white", borderColor: "white" },
+                  }}
                   id="standard-basic"
                   label="task title"
                   variant="outlined"
@@ -142,7 +170,10 @@ function NewCol({
                   onChange={handleTitleChange}
                 />
                 <TextField
-                  sx={{ marginTop: "10px" }}
+                  sx={{
+                    marginTop: "10px",
+                    input: { color: "white", borderColor: "white" },
+                  }}
                   id="standard-basic"
                   label="task description"
                   variant="outlined"
@@ -184,6 +215,7 @@ function NewCol({
                 type="submit"
                 variant="contained"
                 color="success"
+                disabled={formValues.taskTitle === ""}
               >
                 Add
               </Button>

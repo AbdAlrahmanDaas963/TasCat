@@ -19,6 +19,7 @@ import LoginPage from "./screen/registration/LoginPage";
 import SignupPage from "./screen/registration/SignupPage";
 import Drawer from "./screen/newDandD/drawer/Drawer";
 import App from "./App";
+import NotFound from "./screen/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignupPage />,
+  },
+  {
+    path: "/*",
+    element: <NotFound />,
   },
 ]);
 

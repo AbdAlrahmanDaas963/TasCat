@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 
 import { updateOnDrag, getBoard } from "../../api/kanbanApi";
 
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { DragDropContext } from "react-beautiful-dnd";
 
 import NewCol from "./NewCol";
@@ -229,19 +229,35 @@ function Tasks({ boardId, boardTitle }) {
         display={"flex"}
         flexWrap={"wrap"}
         flexDirection={"row"}
-        justifyContent={"space-between"}
+        justifyContent={"center"}
         alignItems={"flex-start"}
       >
         <Stack
           sx={{
-            margin: "0 50px",
+            marginBottom: "50px",
             border: "0px solid white",
             borderRadius: "7px",
-            padding: "0 50px",
+            padding: "0 10px",
             color: "white",
           }}
         >
-          <h2>Todo</h2>
+          <Box
+            sx={{
+              padding: "0px 16px 0px 16px",
+              borderRadius: "8px",
+              justify: "space-between",
+              background: "#8E8EFF5E",
+              boxShadow: "0px 2px 5px 0px #00000040",
+              fontSize: "20px",
+              fontWeight: "300",
+
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Todo
+          </Box>
           <NewCol
             handleAddTask={addTask}
             handleEditTask={editTask}
@@ -253,14 +269,30 @@ function Tasks({ boardId, boardTitle }) {
         </Stack>
         <Stack
           sx={{
-            margin: "0 50px",
+            marginBottom: "50px",
             border: "0px solid white",
             borderRadius: "7px",
-            padding: "0 50px",
+            padding: "0 10px",
             color: "white",
           }}
         >
-          <h2>Doing</h2>
+          <Box
+            sx={{
+              padding: "0px 16px 0px 16px",
+              borderRadius: "8px",
+              justify: "space-between",
+              background: "#8E8EFF5E",
+              boxShadow: "0px 2px 5px 0px #00000040",
+              fontSize: "20px",
+              fontWeight: "300",
+
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Doing
+          </Box>
           <NewCol
             handleAddTask={addTask}
             handleEditTask={editTask}
@@ -272,14 +304,30 @@ function Tasks({ boardId, boardTitle }) {
         </Stack>
         <Stack
           sx={{
-            margin: "0 50px",
+            marginBottom: "50px",
             border: "0px solid white",
             borderRadius: "7px",
-            padding: "0 50px",
+            padding: "0 10px",
             color: "white",
           }}
         >
-          <h2>Done</h2>
+          <Box
+            sx={{
+              padding: "0px 16px 0px 16px",
+              borderRadius: "8px",
+              justify: "space-between",
+              background: "#8E8EFF5E",
+              boxShadow: "0px 2px 5px 0px #00000040",
+              fontSize: "20px",
+              fontWeight: "300",
+
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Done
+          </Box>
           <NewCol
             handleAddTask={addTask}
             handleEditTask={editTask}
