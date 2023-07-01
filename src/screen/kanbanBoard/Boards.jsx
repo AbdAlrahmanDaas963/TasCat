@@ -12,6 +12,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Skeleton from "@mui/material/Skeleton";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 import tasCatSvg from "../../assets/TasCat.svg";
 import addboardSvg from "../../assets/addBoard.svg";
@@ -24,6 +25,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function Boards() {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const uniqueId = uuidv4();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
@@ -113,7 +116,13 @@ function Boards() {
       justifyContent={"space-evenly"}
       direction={"column"}
     >
-      <img src={tasCatSvg} alt="" />
+      <Stack
+        sx={{
+          width: isSmallScreen ? "250px" : "400px",
+        }}
+      >
+        <img src={tasCatSvg} alt="" />
+      </Stack>
       <Stack
         display={"flex"}
         flexWrap={"wrap"}

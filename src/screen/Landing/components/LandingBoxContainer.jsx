@@ -41,15 +41,17 @@ function LandingBoxContainer() {
       container
       spacing={2}
       minHeight={"300px"}
-      sx={{ border: "0px solid red", padding: " 0 300px" }}
+      sx={{
+        border: "0px solid red",
+        padding: " 0 300px",
+        alignContent: "center",
+        justifyContent: "center",
+      }}
     >
       {four.map((item) => (
         <Grid
           key={item.id}
           item
-          xs={12}
-          sm={6}
-          md={6}
           sx={{
             border: "0px solid blue",
             padding: "10px !important",

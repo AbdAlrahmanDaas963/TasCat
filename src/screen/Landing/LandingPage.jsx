@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { Box, Stack, Typography } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 import ButtonApp from "../../components/common/buttonapp/ButtonApp";
 import LandingBoxContainer from "./components/LandingBoxContainer";
@@ -9,6 +11,9 @@ import Aust from "../../assets/aust.svg";
 import TasCatSvg from "../../assets/TasCat.svg";
 
 function LandingPage() {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Box>
       <Stack
@@ -16,7 +21,11 @@ function LandingPage() {
         justifyContent={"space-evenly"}
         minHeight={"1200px"}
       >
-        <Stack>
+        <Stack
+          sx={{
+            width: isSmallScreen ? "250px" : "400px",
+          }}
+        >
           <img src={TasCatSvg} alt="" />
           <Typography
             sx={{
